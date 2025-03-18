@@ -4,7 +4,6 @@ import config from "../config/config.js";
 
 export const register = async (req, res) => {
   const { name, email, password, role } = req.body;
-  console.log(req.body);
 
   // Validate request body
   if (!name || !email || !password) {
@@ -37,11 +36,8 @@ export const register = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role,
       createdAt: new Date(),
     };
-
-    console.log(newUser);
 
     const result = await userCollection.insertOne(newUser);
 
@@ -138,7 +134,6 @@ export const login = async (req, res) => {
       userId: user._id.toString(),
       name: user.name,
       email: user.email,
-      role: user.role,
     });
   } catch (error) {
     console.error("Error logging in:", error);
