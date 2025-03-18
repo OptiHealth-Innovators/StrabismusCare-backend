@@ -72,7 +72,6 @@ export const register = async (req, res) => {
         };
 
         await doctorCollection.insertOne(newDoctor);
-        console.log(newDoctor);
       }
 
       res.status(201).json({
