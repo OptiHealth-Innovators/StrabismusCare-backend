@@ -44,7 +44,6 @@ export const register = async (req, res) => {
     console.log(newUser);
 
     const result = await userCollection.insertOne(newUser);
-   
 
     if (result.insertedId) {
       if (role === "patient") {
@@ -77,7 +76,6 @@ export const register = async (req, res) => {
         };
 
         await doctorCollection.insertOne(newDoctor);
-        // console.log(newDoctor);
       }
 
       res.status(201).json({
