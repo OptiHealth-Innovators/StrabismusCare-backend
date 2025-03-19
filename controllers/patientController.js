@@ -103,3 +103,31 @@ export const deletePatient = async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to delete patient", error: error.message });
   }
 };
+
+// Get doctor info by ID
+export const getPatientInfoById = async (req, res) => {
+  try {
+    const db = getDB();
+    const patientsCollection = db.collection("patients");
+    const patient = await patientsCollection.findOne({
+      userId: new ObjectId(req.params.id),
+    });
+
+    if (!patient) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Patient not found" });
+    }
+
+    res.status(200).json({ success: true, data: patient });
+  } catch (error) {
+    console.error("Error fetching patient info:", error);
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Failed to fetch patient info",
+        error: error.message,
+      });
+  }
+};

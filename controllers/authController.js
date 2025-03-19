@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { getDB } from "../config/db.js";
 import config from "../config/config.js";
+import { ObjectId } from "mongodb";
 
 export const register = async (req, res) => {
   const { name, email, password, role } = req.body;
@@ -35,6 +36,7 @@ export const register = async (req, res) => {
     const newUser = {
       name,
       email,
+      role,
       password: hashedPassword,
       createdAt: new Date(),
     };
@@ -140,6 +142,50 @@ export const login = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Login failed",
+      error: error.message,
+    });
+  }
+};
+
+export const getUserById = async (req, res) => {
+  const { id } = req.params;
+
+  // Validate request params
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      message: "User ID is required",
+    });
+  }
+
+  const db = getDB();
+  const userCollection = db.collection("users");
+
+  try {
+    const user = await userCollection.findOne({ _id: new ObjectId(id) });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User retrieved successfully",
+      user: {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        createdAt: user.createdAt,
+      },
+    });
+  } catch (error) {
+    console.error("Error retrieving user:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve user",
       error: error.message,
     });
   }

@@ -10,7 +10,7 @@ import patientRoutes from "./routes/patientRoutes.js";
 import doctorRoutes from "./routes/doctorRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 // Import controllers directly
-import { register, login } from "./controllers/authController.js";
+import { register, login, getUserById } from "./controllers/authController.js";
 
 const app = express();
 
@@ -30,6 +30,7 @@ connectDB()
     // Direct routes for auth
     app.post("/register", register);
     app.post("/login", login);
+    app.get("/user/:id", getUserById);
 
     // Routes with prefixes
     app.use("/auth", authRoutes);

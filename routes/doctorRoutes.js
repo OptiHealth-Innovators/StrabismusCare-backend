@@ -5,7 +5,8 @@ import {
   addDoctor, 
   updateDoctor, 
   deleteDoctor,
-  searchDoctors
+  searchDoctors,
+  getDoctorInfoById
 } from '../controllers/doctorController.js';
 
 const router = express.Router();
@@ -27,5 +28,8 @@ router.put('/:id', updateDoctor);
 
 // Delete a doctor
 router.delete('/:id', deleteDoctor);
+
+// Additional route for getting doctors by specialization
+router.get('/doctor/:id', getDoctorInfoById);
 
 export default router;
